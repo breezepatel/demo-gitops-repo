@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: demo-app-stg
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/breezepatel/demo-gitops-repo
+    targetRevision: main
+    path: environments/stg
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: demo-stg
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
