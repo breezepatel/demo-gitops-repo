@@ -1,0 +1,12 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Warehouse
+metadata:
+  name: demo-app-warehouse
+  namespace: demo-app
+spec:
+  freightCreationPolicy: Automatic
+  subscriptions:
+  - image:
+      repoURL: ghcr.io/breezepatel/demo-gitops-repo/demo-app
+      semverConstraint: ^1.0.0
+      discoveryLimit: 10

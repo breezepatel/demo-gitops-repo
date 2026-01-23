@@ -1,0 +1,121 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: dev
+  namespace: demo-app
+spec:
+  requestedFreight:
+  - origin:
+      kind: Warehouse
+      name: demo-app-warehouse
+    sources:
+      direct: true
+  promotionTemplate:
+    spec:
+      steps:
+      - uses: git-clone
+        config:
+          repoURL: https://github.com/breezepatel/demo-gitops-repo
+          checkout:
+          - branch: main
+            path: ./out
+      - uses: git-clear
+        config:
+          path: ./out/environments/dev
+      - uses: kustomize-set-image
+        as: update-image
+        config:
+          path: ./out/environments/dev
+          images:
+          - image: ghcr.io/breezepatel/demo-gitops-repo/demo-app
+      - uses: git-commit
+        config:
+          path: ./out
+          messageFromSteps:
+          - update-image
+      - uses: git-push
+        config:
+          path: ./out
+          targetBranch: main
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: stg
+  namespace: demo-app
+spec:
+  requestedFreight:
+  - origin:
+      kind: Warehouse
+      name: demo-app-warehouse
+    sources:
+      stages:
+      - dev
+  promotionTemplate:
+    spec:
+      steps:
+      - uses: git-clone
+        config:
+          repoURL: https://github.com/breezepatel/demo-gitops-repo
+          checkout:
+          - branch: main
+            path: ./out
+      - uses: git-clear
+        config:
+          path: ./out/environments/stg
+      - uses: kustomize-set-image
+        as: update-image
+        config:
+          path: ./out/environments/stg
+          images:
+          - image: ghcr.io/breezepatel/demo-gitops-repo/demo-app
+      - uses: git-commit
+        config:
+          path: ./out
+          messageFromSteps:
+          - update-image
+      - uses: git-push
+        config:
+          path: ./out
+          targetBranch: main
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: prd
+  namespace: demo-app
+spec:
+  requestedFreight:
+  - origin:
+      kind: Warehouse
+      name: demo-app-warehouse
+    sources:
+      stages:
+      - stg
+  promotionTemplate:
+    spec:
+      steps:
+      - uses: git-clone
+        config:
+          repoURL: https://github.com/breezepatel/demo-gitops-repo
+          checkout:
+          - branch: main
+            path: ./out
+      - uses: git-clear
+        config:
+          path: ./out/environments/prd
+      - uses: kustomize-set-image
+        as: update-image
+        config:
+          path: ./out/environments/prd
+          images:
+          - image: ghcr.io/breezepatel/demo-gitops-repo/demo-app
+      - uses: git-commit
+        config:
+          path: ./out
+          messageFromSteps:
+          - update-image
+      - uses: git-push
+        config:
+          path: ./out
+          targetBranch: main
