@@ -7,6 +7,6 @@ spec:
   freightCreationPolicy: Automatic
   subscriptions:
   - image:
-      repoURL: ghcr.io/breezepatel/demo-gitops-repo/demo-app
+      repoURL: ghcr.io/breezepatel/demo-app-repo/demo-app
       semverConstraint: ^1.0.0
       discoveryLimit: 10
