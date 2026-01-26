@@ -16,6 +16,12 @@ spec:
       - uses: git-clone
         config:
           repoURL: https://github.com/breezepatel/demo-gitops-repo
+          credentials:
+            secret:
+              name: git-credentials
+              keys:
+                username: username
+                password: password
           checkout:
           - branch: main
             path: ./repo
@@ -54,6 +60,12 @@ spec:
       - uses: git-clone
         config:
           repoURL: https://github.com/breezepatel/demo-gitops-repo
+          credentials:
+            secret:
+              name: git-credentials
+              keys:
+                username: username
+                password: password
           checkout:
           - branch: main
             path: ./repo
@@ -92,6 +104,12 @@ spec:
       - uses: git-clone
         config:
           repoURL: https://github.com/breezepatel/demo-gitops-repo
+          credentials:
+            secret:
+              name: git-credentials
+              keys:
+                username: username
+                password: password
           checkout:
           - branch: main
             path: ./repo
