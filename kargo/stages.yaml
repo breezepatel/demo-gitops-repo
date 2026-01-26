@@ -34,17 +34,12 @@ spec:
         config:
           path: ./repo
           targetBranch: main
-  verification:
-    analysisTemplates: []
 ---
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage
 metadata:
   name: stg
   namespace: demo-app
-  annotations:
-    kargo.akuity.io/argocd-app-name: demo-app-stg
-    kargo.akuity.io/argocd-app-namespace: argocd
 spec:
   requestedFreight:
   - origin:
@@ -77,17 +72,12 @@ spec:
         config:
           path: ./repo
           targetBranch: main
-  verification:
-    analysisTemplates: []
 ---
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage
 metadata:
   name: prd
   namespace: demo-app
-  annotations:
-    kargo.akuity.io/argocd-app-name: demo-app-prd
-    kargo.akuity.io/argocd-app-namespace: argocd
 spec:
   requestedFreight:
   - origin:
@@ -120,5 +110,3 @@ spec:
         config:
           path: ./repo
           targetBranch: main
-  verification:
-    analysisTemplates: []
