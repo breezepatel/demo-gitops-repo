@@ -4,7 +4,7 @@ metadata:
   name: demo-app
   namespace: demo-prd
 spec:
-  replicas: 5
+  replicas: 3  # More replicas for production
   selector:
     matchLabels:
       app: demo-app
@@ -15,42 +15,36 @@ spec:
     spec:
       containers:
       - name: demo-app
-        image: ghcr.io/breezepatel/demo-app-repo/demo-app:v1.0
+        image: ghcr.io/breezepatel/demo-app-repo/demo-app:1.0.0
         ports:
         - containerPort: 8000
           name: http
         env:
         - name: ENVIRONMENT
-          value: "production"
+          value: "prd"
         - name: APP_VERSION
-          value: "v1.0"
+          value: "prd"
         livenessProbe:
           httpGet:
             path: /health
             port: 8000
-          initialDelaySeconds: 15
+          initialDelaySeconds: 10
           periodSeconds: 10
         readinessProbe:
           httpGet:
             path: /health
             port: 8000
-          initialDelaySeconds: 10
+          initialDelaySeconds: 5
           periodSeconds: 5
         resources:
           requests:
+            memory: "256Mi"
+            cpu: "200m"
+          limits:
             memory: "512Mi"
             cpu: "500m"
-          limits:
-            memory: "1Gi"
-            cpu: "1000m"
   strategy:
-    canary:
-      steps:
-      - setWeight: 5
-      - pause: {duration: 5m}
-      - setWeight: 20
-      - pause: {duration: 5m}
-      - setWeight: 50
-      - pause: {duration: 10m}
-      - setWeight: 80
-      - pause: {duration: 5m}
+    blueGreen:  # Blue-Green for production
+      activeService: demo-app
+      previewService: demo-app-preview
+      autoPromotionEnabled: false  # Manual approval for production
