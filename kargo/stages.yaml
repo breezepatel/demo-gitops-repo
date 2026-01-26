@@ -18,31 +18,36 @@ spec:
           repoURL: https://github.com/breezepatel/demo-gitops-repo
           checkout:
           - branch: main
-            path: ./out
+            path: ./repo
       - uses: git-clear
         config:
-          path: ./out/environments/dev
+          path: ./repo/environments/dev
       - uses: kustomize-set-image
         as: update-image
         config:
-          path: ./out/environments/dev
+          path: ./repo/environments/dev
           images:
-          - image: ghcr.io/breezepatel/demo-gitops-repo/demo-app
+          - image: ghcr.io/breezepatel/demo-app-repo/demo-app
       - uses: git-commit
         config:
-          path: ./out
+          path: ./repo
           messageFromSteps:
           - update-image
       - uses: git-push
         config:
-          path: ./out
+          path: ./repo
           targetBranch: main
+  verification:
+    analysisTemplates: []
 ---
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage
 metadata:
   name: stg
   namespace: demo-app
+  annotations:
+    kargo.akuity.io/argocd-app-name: demo-app-stg
+    kargo.akuity.io/argocd-app-namespace: argocd
 spec:
   requestedFreight:
   - origin:
@@ -59,31 +64,36 @@ spec:
           repoURL: https://github.com/breezepatel/demo-gitops-repo
           checkout:
           - branch: main
-            path: ./out
+            path: ./repo
       - uses: git-clear
         config:
-          path: ./out/environments/stg
+          path: ./repo/environments/stg
       - uses: kustomize-set-image
         as: update-image
         config:
-          path: ./out/environments/stg
+          path: ./repo/environments/stg
           images:
-          - image: ghcr.io/breezepatel/demo-gitops-repo/demo-app
+          - image: ghcr.io/breezepatel/demo-app-repo/demo-app
       - uses: git-commit
         config:
-          path: ./out
+          path: ./repo
           messageFromSteps:
           - update-image
       - uses: git-push
         config:
-          path: ./out
+          path: ./repo
           targetBranch: main
+  verification:
+    analysisTemplates: []
 ---
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage
 metadata:
   name: prd
   namespace: demo-app
+  annotations:
+    kargo.akuity.io/argocd-app-name: demo-app-prd
+    kargo.akuity.io/argocd-app-namespace: argocd
 spec:
   requestedFreight:
   - origin:
@@ -100,22 +110,24 @@ spec:
           repoURL: https://github.com/breezepatel/demo-gitops-repo
           checkout:
           - branch: main
-            path: ./out
+            path: ./repo
       - uses: git-clear
         config:
-          path: ./out/environments/prd
+          path: ./repo/environments/prd
       - uses: kustomize-set-image
         as: update-image
         config:
-          path: ./out/environments/prd
+          path: ./repo/environments/prd
           images:
-          - image: ghcr.io/breezepatel/demo-gitops-repo/demo-app
+          - image: ghcr.io/breezepatel/demo-app-repo/demo-app
       - uses: git-commit
         config:
-          path: ./out
+          path: ./repo
           messageFromSteps:
           - update-image
       - uses: git-push
         config:
-          path: ./out
+          path: ./repo
           targetBranch: main
+  verification:
+    analysisTemplates: []
