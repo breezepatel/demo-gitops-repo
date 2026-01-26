@@ -8,4 +8,4 @@ commonLabels:
   environment: prd
 images:
 - name: ghcr.io/breezepatel/demo-app-repo/demo-app
-  newTag: '1.0.0'  # This will be updated by Kargo promotions
+  newTag: '{{ .Freight.Artifacts[0].Version }}' # This will be updated by Kargo promotions
