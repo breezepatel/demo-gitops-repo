@@ -9,7 +9,7 @@ spec:
       kind: Warehouse
       name: demo-app-warehouse
     sources:
-      direct: true  # PRD gets freight directly from warehouse
+      direct: true
 
   promotionTemplate:
     spec:
@@ -27,7 +27,7 @@ spec:
           path: ./repo/environments/prd
           images:
           - image: ghcr.io/breezepatel/demo-app-repo/demo-app
-            tag: "{{ .Freight.Artifacts[0].Version }}"
+            tag: "{{ .Freight.Artifacts[0].Tag }}"  # Use .Tag instead of .Version
 
       - uses: git-commit
         config:
