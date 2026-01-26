@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: demo-app
-        image: ghcr.io/breezepatel/demo-app-repo/demo-app:v1.0.0
+        image: ghcr.io/breezepatel/demo-app-repo/demo-app:v1.0
         ports:
         - containerPort: 8000
           name: http
@@ -23,7 +23,7 @@ spec:
         - name: ENVIRONMENT
           value: "production"
         - name: APP_VERSION
-          value: "v1.0.0"
+          value: "v1.0"
         livenessProbe:
           httpGet:
             path: /health
