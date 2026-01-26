@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: demo-app
-        image: ghcr.io/breezepatel/demo-app-repo/demo-app:ad94453
+        image: ghcr.io/breezepatel/demo-app-repo/demo-app:9ed8c93  # ✅ Actual tag
         ports:
         - containerPort: 8000
           name: http
