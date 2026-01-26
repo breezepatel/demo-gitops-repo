@@ -27,7 +27,7 @@ spec:
           path: ./repo/environments/prd
           images:
           - image: ghcr.io/breezepatel/demo-app-repo/demo-app
-            tag: "${{ index .Freight.Images 0 | .Tag }}"  # Note: Use Tag, not Version
+            tag: "${{ .Freight.Images[0].Tag }}"  # Note: Use Tag, not Version
 
 
       - uses: git-commit
