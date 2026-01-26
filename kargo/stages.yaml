@@ -13,10 +13,16 @@ spec:
 
   promotionTemplate:
     spec:
+      vars:
+      - name: gitRepo
+        value: https://github.com/breezepatel/demo-gitops-repo
+      - name: imageRepo
+        value: ghcr.io/breezepatel/demo-app-repo/demo-app
+      
       steps:
       - uses: git-clone
         config:
-          repoURL: https://github.com/breezepatel/demo-gitops-repo
+          repoURL: ${{ vars.gitRepo }}
           checkout:
           - branch: main
             path: ./repo
@@ -26,9 +32,8 @@ spec:
         config:
           path: ./repo/environments/prd
           images:
-          - image: ghcr.io/breezepatel/demo-app-repo/demo-app
-            tag: "${{ .Freight.Images[0].Tag }}"  # Note: Use Tag, not Version
-
+          - image: ${{ vars.imageRepo }}
+            tag: ${{ imageFrom(vars.imageRepo).Tag }}  # Use imageFrom() function
 
       - uses: git-commit
         config:
