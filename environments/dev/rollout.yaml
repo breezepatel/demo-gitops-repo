@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: demo-app
-        image: ghcr.io/breezepatel/demo-app-repo/demo-app:b6bea50
+        image: ghcr.io/breezepatel/demo-app-repo/demo-app:ff718ee
         ports:
         - containerPort: 8000
           name: http
