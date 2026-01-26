@@ -1,97 +1,3 @@
-# ---------------------------------
-# DEV (Warehouse → Dev)
-# ---------------------------------
-apiVersion: kargo.akuity.io/v1alpha1
-kind: Stage
-metadata:
-  name: dev
-  namespace: demo-app
-spec:
-  requestedFreight:
-  - origin:
-      kind: Warehouse
-      name: demo-app-warehouse
-    sources:
-      direct: true
-
-  promotionTemplate:
-    spec:
-      steps:
-      - uses: git-clone
-        config:
-          repoURL: https://github.com/breezepatel/demo-gitops-repo
-          checkout:
-          - branch: main
-            path: ./repo
-
-      - uses: kustomize-set-image
-        as: update-image
-        config:
-          path: ./repo/environments/dev
-          images:
-          - image: ghcr.io/breezepatel/demo-app-repo/demo-app
-            tag: "{{ .Freight.Artifacts[0].Version }}"
-
-      - uses: git-commit
-        config:
-          path: ./repo
-          messageFromSteps:
-          - update-image
-
-      - uses: git-push
-        config:
-          path: ./repo
-          targetBranch: main
----
-# ---------------------------------
-# STG (Warehouse → Stg, gated by Dev)
-# ---------------------------------
-apiVersion: kargo.akuity.io/v1alpha1
-kind: Stage
-metadata:
-  name: stg
-  namespace: demo-app
-spec:
-  requestedFreight:
-  - origin:
-      kind: Warehouse
-      name: demo-app-warehouse
-    sources:
-      stages:
-      - dev
-
-  promotionTemplate:
-    spec:
-      steps:
-      - uses: git-clone
-        config:
-          repoURL: https://github.com/breezepatel/demo-gitops-repo
-          checkout:
-          - branch: main
-            path: ./repo
-
-      - uses: kustomize-set-image
-        as: update-image
-        config:
-          path: ./repo/environments/stg
-          images:
-          - image: ghcr.io/breezepatel/demo-app-repo/demo-app
-            tag: "{{ .Freight.Artifacts[0].Version }}"
-
-      - uses: git-commit
-        config:
-          path: ./repo
-          messageFromSteps:
-          - update-image
-
-      - uses: git-push
-        config:
-          path: ./repo
-          targetBranch: main
----
-# ---------------------------------
-# PRD (Warehouse → Prd, gated by Stg)
-# ---------------------------------
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage
 metadata:
@@ -103,8 +9,7 @@ spec:
       kind: Warehouse
       name: demo-app-warehouse
     sources:
-      stages:
-      - stg
+      direct: true  # PRD gets freight directly from warehouse
 
   promotionTemplate:
     spec:
