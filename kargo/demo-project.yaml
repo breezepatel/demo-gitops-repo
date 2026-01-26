@@ -3,4 +3,24 @@ kind: Project
 metadata:
   name: demo-app
   namespace: demo-app
-
+spec:
+  promotionPolicies:
+  - stage: dev
+    autoPromotionEnabled: true
+  - stage: stg
+    autoPromotionEnabled: false  # Manual approval required
+  - stage: prd
+    autoPromotionEnabled: false  # Manual approval required
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: git-credentials
+  namespace: demo-app
+  labels:
+    kargo.akuity.io/cred-type: git
+type: Opaque
+stringData:
+  repoURL: https://github.com/breezepatel/demo-gitops-repo
+  username: your-github-username
+  password: your-github-token  # Use a Personal Access Token
