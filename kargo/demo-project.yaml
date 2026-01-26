@@ -5,4 +5,3 @@ metadata:
   namespace: demo-app
 spec:
   description: "Demo project for testing Kargo"
-
