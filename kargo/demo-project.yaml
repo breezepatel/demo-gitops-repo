@@ -5,10 +5,6 @@ metadata:
   namespace: demo-app
 spec:
   promotionPolicies:
-  - stage: dev
-    autoPromotionEnabled: true
-  - stage: stg
-    autoPromotionEnabled: false  # Manual approval required
   - stage: prd
     autoPromotionEnabled: false  # Manual approval required
 ---
