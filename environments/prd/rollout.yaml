@@ -3,15 +3,17 @@ kind: Rollout
 metadata:
   name: demo-app
   namespace: demo-prd
+  labels:
+    environment: prd  # Add here explicitly
 spec:
-  replicas: 3  # More replicas for production
+  replicas: 3
   selector:
     matchLabels:
-      app: demo-app
+      app: demo-app  # Keep selector simple
   template:
     metadata:
       labels:
-        app: demo-app
+        app: demo-app  # Keep pod labels simple
     spec:
       containers:
       - name: demo-app
