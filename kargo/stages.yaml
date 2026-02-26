@@ -10,7 +10,6 @@ spec:
       name: demo-app-warehouse
     sources:
       direct: true
-
   promotionTemplate:
     spec:
       vars:
@@ -18,7 +17,6 @@ spec:
         value: https://github.com/breezepatel/demo-gitops-repo
       - name: imageRepo
         value: ghcr.io/breezepatel/demo-app-repo/demo-app
-      
       steps:
       - uses: git-clone
         config:
@@ -26,21 +24,17 @@ spec:
           checkout:
           - branch: main
             path: ./repo
-
       - uses: kustomize-set-image
         as: update-image
         config:
           path: ./repo/environments/prd
           images:
           - image: ${{ vars.imageRepo }}
-            tag: ${{ imageFrom(vars.imageRepo).Tag }}  # Use imageFrom() function
-
+            tag: ${{ imageFrom(vars.imageRepo).Tag }}
       - uses: git-commit
         config:
           path: ./repo
-          messageFromSteps:
-          - update-image
-
+          message: "chore(prd): promote ${{ imageFrom(vars.imageRepo).Tag }}"
       - uses: git-push
         config:
           path: ./repo
