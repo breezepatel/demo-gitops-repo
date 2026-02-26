@@ -8,4 +8,4 @@ commonLabels:
   environment: dev
 images:
 - name: ghcr.io/breezepatel/demo-app-repo/demo-app
-  newTag: '9ed8c93'  # ✅ CORRECT - Actual image tag
+  # newTag: '9ed8c93'  # ✅ CORRECT - Actual image tag
