@@ -9,4 +9,4 @@ namespace: demo-prd
 
 images:
 - name: ghcr.io/breezepatel/demo-app-repo/demo-app
-  newTag: 2.0.5 # Use a real tag initially, Kargo will update this
+  newTag: 2.0.6 # Use a real tag initially, Kargo will update this
